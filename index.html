@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Consti | Map </title>
+	<style>
+		body {
+			font-family: sans-serif;
+			background-color: #f2f2f2;
+			margin: 0;
+			padding: 0;
+		}
+		h1 {
+			font-size: 24px;
+			font-weight: bold;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+		form {
+			background-color: #fff;
+			border-radius: 10px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			margin: 20px auto;
+			padding: 20px;
+			max-width: 500px;
+		}
+		label {
+			display: block;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+		input[type="text"] {
+			background-color: #f9f9f9;
+			border: none;
+			border-radius: 4px;
+			box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+			color: #444;
+			font-size: 16px;
+			margin-bottom: 20px;
+			padding: 10px;
+			width: 100%;
+		}
+		button {
+			background-color: #0077cc;
+			border: none;
+			border-radius: 4px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			color: #fff;
+			cursor: pointer;
+			font-size: 16px;
+			margin-top: 10px;
+			padding: 10px;
+			width: 100%;
+			transition: background-color 0.2s;
+		}
+		button:hover {
+			background-color: #0055a5;
+		}
+	</style>
+</head>
+<body>
+	<h1>What do you need help with?</h1>
+	<form action="/submit" method="POST">
+		<label for="command">Command:</label>
+		<input type="text" id="command" name="command" placeholder="Type your command here" required>
+		<label for="voice-command">Voice Command:</label>
+		<input type="text" id="voice-command" name="voice-command" placeholder="Click the microphone to start speaking" onfocus="startDictation()" required>
+		<button type="button" onclick="startDictation()"><i class="fas fa-microphone"></i></button><br><br>
+		<input type="submit" value="Submit">
+	</form>
+	<script>
+		function startDictation() {
+			if (window.hasOwnProperty('webkitSpeechRecognition')) {
+				var recognition = new webkitSpeechRecognition();
+				recognition.continuous = false;
+				recognition.interimResults = false;
+				recognition.lang = "en-US";
+				recognition.start();
+				recognition.onresult = function(e) {
+					document.getElementById('voice-command').value = e.results[0][0].transcript;
+					recognition.stop();
+				};
+				recognition.onerror = function(e) {
+					recognition.stop();
+				}
+			}
+		}
+	</script>
+</body>
+</html>
